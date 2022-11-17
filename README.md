@@ -24,3 +24,6 @@ This task will filter out transactions that don't affect holdings, sort by date,
 ![stock-events-instructions.jpeg](images/stock-events-instructions.jpeg)
 
 Note that duplicate transactions will be ignored, so this operation should be safe to run as many times as necessary.
+
+## Send output file to iPhone
+Using iCloud, send the output file to your phone and import it from the Stock Events App.
