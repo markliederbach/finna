@@ -1,0 +1,10 @@
+version: "3"
+
+tasks:
+  format:
+    desc: Run the app
+    vars:
+      IN: '{{.IN | default "input.csv"}}'
+      OUT: '{{.IN | default "output.csv"}}'
+    cmds:
+      - go run cmd/finna/main.go format -i input.csv -o output.csv
