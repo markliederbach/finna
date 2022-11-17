@@ -14,9 +14,9 @@ https://personal.vanguard.com/us/OfxWelcome
 ```bash
 ➜ task format
 task: [format] go run cmd/finna/main.go format -i input.csv -o output.csv
-{"level":"info","msg":"Running finna","time":"2022-11-17T12:01:45-06:00","version":"latest"}
-{"args":{"OutputFormat":"stock-events","InputFile":"input.csv","OutputFile":"output.csv"},"level":"info","msg":"Running format command","time":"2022-11-17T12:01:45-06:00"}
-{"level":"info","msg":"Found 133 CSV rows","time":"2022-11-17T12:01:45-06:00"}
+{"level":"info","msg":"Running finna","version":"latest"}
+{"args":{"OutputFormat":"stock-events","InputFile":"input.csv","OutputFile":"output.csv"},"level":"info","msg":"Running format command"}
+{"level":"info","msg":"Found 133 CSV rows"}
 ```
 
 This task will filter out transactions that don't affect holdings, sort by date, and dump into a CSV format that is required by Stock Events.
