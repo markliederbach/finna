@@ -1,0 +1,4 @@
+{
+  "docker.commands.build": "${config:docker.dockerPath} build --pull --rm -f \"${dockerfile}\" -t ${tag} \"${workspaceRoot}\"",
+  "docker.commands.run": "${config:docker.dockerPath} run --rm -d ${exposedPorts} ${tag}"
+}
