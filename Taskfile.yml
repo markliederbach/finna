@@ -8,3 +8,11 @@ tasks:
       OUT: '{{.IN | default "output.csv"}}'
     cmds:
       - go run cmd/finna/main.go format -i input.csv -o output.csv
+  api:
+    desc: Run the gin api
+    vars: {}
+    env:
+      APP_PORT: "8080"
+      LOG_LEVEL: "DEBUG"
+    cmds:
+      - go run cmd/api/main.go
