@@ -20,6 +20,19 @@
         "-o",
         "output.csv"
       ],
+    },
+    {
+      "name": "Run [API]",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "cwd": "${workspaceRoot}",
+      "program": "cmd/api/main.go",
+      "env": {
+        "APP_PORT": "8080",
+        "LOG_LEVEL": "DEBUG"
+      },
+      "args": [],
     }
   ]
 }

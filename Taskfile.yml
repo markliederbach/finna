@@ -1,6 +1,13 @@
 version: "3"
 
 tasks:
+  api:
+    desc: Run the API locally with provided .env.docker variables
+    deps:
+      - docker:api:build:local
+    cmds:
+      - docker run --env-file .env.docker --rm --interactive -p 8080:8080 finna:latest
+
   format:
     desc: Run the app
     vars:
@@ -8,3 +15,54 @@ tasks:
       OUT: '{{.IN | default "output.csv"}}'
     cmds:
       - go run cmd/finna/main.go format -i input.csv -o output.csv
+
+  env:
+    desc: Follow prompts to generate a new .env file for local development
+    cmds:
+      - |
+        # printf "Network ID: "
+        # stty -echo
+        # read network
+        # export network=$network
+        # stty echo
+
+        # printf "\n"
+
+        # printf "Domain: "
+        # read domain
+        # export domain=$domain
+
+        # envsubst '$network,$domain' < .env.template > .env
+
+        # Once there are variables to set, uncomment the above and remove the below
+        cp .env.template .env
+
+        sed -e 's|["'\'']||g' .env > .env.docker
+    silent: true
+    preconditions:
+      - sh: test ! -f .env
+        msg: .env already exists. Refusing to overwrite.
+      - sh: which envsubst
+        msg: Must have `envsubst` installed to run this task
+
+  docker:login:
+    desc: Login to ghcr.io
+    cmds:
+      - echo $GITHUB_API_TOKEN | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
+    preconditions:
+      - sh: test ! -z "$GITHUB_USERNAME"
+        msg: Must set the GITHUB_USERNAME environment variable
+      - sh: test ! -z "$GITHUB_API_TOKEN"
+        msg: Must set the GITHUB_TOKEN environment variable
+
+  docker:api:build:local:
+    desc: Build the API docker image locally
+    cmds:
+      - docker build --pull --rm -f ./docker/api/Dockerfile -t finna:latest "."
+
+  docker:api:run:remote:
+    desc: Run the application from the latest build with provided .env.docker variables
+    deps:
+      - docker:login
+    cmds:
+      - docker run --pull always --rm --env-file .env.docker ghcr.io/markliederbach/finna:latest
