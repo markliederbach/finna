@@ -1,9 +1,26 @@
 # Finna <!-- omit in toc -->
 
+- [API](#api)
+  - [Getting Started](#getting-started)
 - [Import Vanguard Transactions to Stock Events](#import-vanguard-transactions-to-stock-events)
   - [Download transaction history](#download-transaction-history)
   - [Run `format` task to fix up data](#run-format-task-to-fix-up-data)
   - [Send output file to iPhone](#send-output-file-to-iphone)
+
+# API
+## Getting Started
+If you are looking to run the API server, following these instructions.
+
+Set a `.env` file using the provided template.
+```bash
+task env
+```
+
+Now you can run the API simply with
+```bash
+task api
+```
+- Note, this will require that docker is running.
 
 # Import Vanguard Transactions to Stock Events
 
