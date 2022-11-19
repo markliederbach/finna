@@ -284,6 +284,6 @@ func writeCSV(path string, data [][]string) error {
 	defer f.Close()
 
 	csvWriter := csv.NewWriter(f)
-	csvWriter.WriteAll(data)
+	_ = csvWriter.WriteAll(data)
 	return csvWriter.Error()
 }

@@ -1,0 +1,144 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Taskfile
+        uses: arduino/setup-task@main
+        with:
+          version: "3.x"
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "~1.19"
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Dependencies
+        run: task deps
+      - name: Lint
+        run: task lint
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Taskfile
+        uses: arduino/setup-task@main
+        with:
+          version: "3.x"
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "~1.19"
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Dependencies
+        run: task deps
+      - name: Unit Tests
+        run: task test
+  check-goreleaser:
+    name: Check Goreleaser
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Taskfile
+        uses: arduino/setup-task@main
+        with:
+          version: "3.x"
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "~1.19"
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Check Goreleaser
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          version: latest
+          args: check
+  release:
+    name: Create Release
+    needs:
+      - lint
+      - unit-tests
+      - check-goreleaser
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Taskfile
+        uses: arduino/setup-task@main
+        with:
+          version: "3.x"
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "~1.19"
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+      - name: GoReleaser
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docker-api:
+    name: Docker Image (API)
+    needs:
+      - lint
+      - unit-tests
+      - check-goreleaser
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Taskfile
+        uses: arduino/setup-task@main
+        with:
+          version: "3.x"
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "~1.19"
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+      - name: Tag name
+        id: tag_name
+        run: |
+          echo ::set-output name=pushed_tag::${GITHUB_REF#refs/tags/}
+      - name: Docker Meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: markliederbach/finna-api,ghcr.io/${{ github.repository }}-api
+          tags: |
+            type=semver,pattern=v{{version}}
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and Push to ghcr.io
+        uses: docker/build-push-action@v2
+        with:
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          file: docker/api/Dockerfile
+          build-args: |
+            VERSION=${{ steps.tag_name.outputs.pushed_tag }}

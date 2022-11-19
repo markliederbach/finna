@@ -2,6 +2,7 @@
 
 ⚠️ **Small personal project! Contains UNTESTED code** ⚠️
 
+- [Dependencies](#dependencies)
 - [API](#api)
   - [Getting Started](#getting-started)
 - [Other Tasks](#other-tasks)
@@ -9,6 +10,14 @@
   - [Download transaction history](#download-transaction-history)
   - [Run `format` task to fix up data](#run-format-task-to-fix-up-data)
   - [Send output file to iPhone](#send-output-file-to-iphone)
+
+
+# Dependencies
+All external dependencies can be installed via
+```bash
+task deps
+```
+- Note: Requires [task](https://taskfile.dev/#/installation) to run
 
 # API
 ## Getting Started
