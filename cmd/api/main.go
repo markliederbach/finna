@@ -94,7 +94,7 @@ func ginLoggerMiddleware() gin.HandlerFunc {
 		logger := contextLogger.WithFields(logrus.Fields{
 			"hostname":   hostname,
 			"statusCode": statusCode,
-			"latency":    latency, // time to process
+			"latency_ms": latency, // time to process
 			"clientIP":   clientIP,
 			"method":     c.Request.Method,
 			"path":       path,
