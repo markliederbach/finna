@@ -2,7 +2,8 @@
 
 - [API](#api)
   - [Getting Started](#getting-started)
-- [Import Vanguard Transactions to Stock Events](#import-vanguard-transactions-to-stock-events)
+- [Other Tasks](#other-tasks)
+  - [Import Vanguard Transactions to Stock Events](#import-vanguard-transactions-to-stock-events)
   - [Download transaction history](#download-transaction-history)
   - [Run `format` task to fix up data](#run-format-task-to-fix-up-data)
   - [Send output file to iPhone](#send-output-file-to-iphone)
@@ -22,8 +23,9 @@ task api
 ```
 - Note, this will require that docker is running.
 
-# Import Vanguard Transactions to Stock Events
-
+# Other Tasks
+## Import Vanguard Transactions to Stock Events
+This task helps to format exported transactions from Vanguard in a way that can be imported into the Stock Events app.
 ## Download transaction history
 Visit the Download Center in Vanguard
 
