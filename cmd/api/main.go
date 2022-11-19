@@ -65,6 +65,7 @@ func configureLogger() (gin.HandlerFunc, error) {
 			"request_id": c.GetString("request_id"),
 		})
 		c.Set("logger", contextLogger)
+		c.Next()
 	}, nil
 }
 
