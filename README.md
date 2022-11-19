@@ -1,5 +1,7 @@
 # Finna <!-- omit in toc -->
 
+⚠️ **Small Personal Project! Contains UNTESTED code** ⚠️
+
 - [API](#api)
   - [Getting Started](#getting-started)
 - [Other Tasks](#other-tasks)
