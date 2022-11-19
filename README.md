@@ -1,6 +1,6 @@
 # Finna <!-- omit in toc -->
 
-⚠️ **Small Personal Project! Contains UNTESTED code** ⚠️
+⚠️ **Small personal project! Contains UNTESTED code** ⚠️
 
 - [API](#api)
   - [Getting Started](#getting-started)
