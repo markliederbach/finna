@@ -1,10 +1,54 @@
 version: "3"
 
+vars:
+  TOOL_BIN:
+    sh: echo "$(pwd)/bin"
+
 tasks:
   deps:
     desc: Install project dependencies
     cmds:
-      - cat tools.go | grep _ | awk -F'"' '{print $2}' | xargs -tI % go install %
+      - cmd: mkdir -p {{.TOOL_BIN}}
+      - task: golangci-lint
+      - task: goreleaser
+
+  golangci-lint:
+    vars:
+      VERSION: "1.50.1"
+    cmds:
+      - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b {{.TOOL_BIN}} v{{.VERSION}}
+    status:
+      - '[[ $({{.TOOL_BIN}}/golangci-lint version) == *"{{.VERSION}}"* ]]'
+
+  goreleaser:
+    vars:
+      VERSION: "1.12.3"
+    cmds:
+      - task: go-get-tool
+        vars:
+          TOOL_NAME: goreleaser
+          TOOL_SRC: github.com/goreleaser/goreleaser@v{{.VERSION}}
+    status:
+      - '[[ $({{.TOOL_BIN}}/goreleaser --version) == *"{{.VERSION}}"* ]]'
+
+  go-get-tool:
+    desc: "`go get` for a tool and install it to local bin"
+    silent: true
+    cmds:
+      - |
+        set -e
+        mkdir -p {{.TOOL_BIN}}
+        echo "Downloading {{.TOOL_SRC}}"
+        GOBIN={{.TOOL_BIN}} go install {{.TOOL_SRC}}
+    status:
+      - test -f {{.TOOL_BIN}}/{{.TOOL_NAME}}
+    preconditions:
+      - sh: test ! -z "{{.TOOL_BIN}}"
+        msg: "TOOL_BIN must be set to an absolute path"
+      - sh: test ! -z "{{.TOOL_NAME}}"
+        msg: "TOOL_NAME is a required variable"
+      - sh: test ! -z "{{.TOOL_SRC}}"
+        msg: "TOOL_SRC is a required variable"
 
   api:
     desc: Run the API locally with provided .env.docker variables
@@ -24,9 +68,10 @@ tasks:
   lint:
     desc: Lint code
     cmds:
-      - golangci-lint run --config .golangci.yml --verbose
+      - "{{.TOOL_BIN}}/golangci-lint run --config .golangci.yml --verbose"
     preconditions:
-      - which golangci-lint
+      - sh: "{{.TOOL_BIN}}/golangci-lint version"
+        msg: Run `task deps` to install tools
 
   test:
     desc: Run package tests
@@ -127,17 +172,17 @@ tasks:
   goreleaser:check:
     desc: Validate the Goreleaser configuration
     cmds:
-      - ${GOPATH}/bin/goreleaser check
+      - "{{.TOOL_BIN}}/goreleaser check"
     preconditions:
-      - sh: ${GOPATH}/bin/goreleaser --version
-        msg: Run `task deps` to install Go tools
+      - sh: "{{.TOOL_BIN}}/goreleaser --version"
+        msg: Run `task deps` to install tools
 
   goreleaser:build:
     desc: Build a snapshot locally
     cmds:
-      - ${GOPATH}/bin/goreleaser build --snapshot --rm-dist
+      - "{{.TOOL_BIN}}/goreleaser build --snapshot --rm-dist"
     preconditions:
-      - sh: ${GOPATH}/bin/goreleaser --version
+      - sh: "{{.TOOL_BIN}}/goreleaser --version"
         msg: Run `task deps` to install Go tools
 
   bump:
