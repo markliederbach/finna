@@ -23,10 +23,11 @@ jobs:
           go-version: "~1.19"
       - name: Checkout
         uses: actions/checkout@main
-      - name: Dependencies
-        run: task deps
-      - name: Lint
-        run: task lint
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.50.1
+          args: --config .golangci.yml --verbose
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
