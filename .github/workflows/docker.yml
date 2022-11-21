@@ -26,7 +26,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: markliederbach/${{ github.repository }}-api,ghcr.io/${{ github.repository }}-api
+          images: ${{ github.repository }}-api,ghcr.io/${{ github.repository }}-api
           tags: |
             type=sha,format=long
       - name: Login to GitHub Container Registry
