@@ -22,10 +22,6 @@ jobs:
         uses: actions/checkout@main
         with:
           fetch-depth: 0
-      - name: Tag name
-        id: tag_name
-        run: |
-          echo ::set-output name=pushed_tag::${GITHUB_REF#refs/tags/}
       - name: Docker Meta
         id: meta
         uses: docker/metadata-action@v3
@@ -54,4 +50,4 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           file: docker/api/Dockerfile
           build-args: |
-            VERSION=${{ steps.tag_name.outputs.pushed_tag }}
+            VERSION=v0.0.2
