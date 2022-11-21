@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
       - name: Docker Meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: markliederbach/finna-api,ghcr.io/${{ github.repository }}-api
           tags: |
