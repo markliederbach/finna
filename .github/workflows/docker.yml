@@ -26,11 +26,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: markliederbach/finna-api,ghcr.io/${{ github.repository }}-api
+          images: markliederbach/${{ github.repository }}-api,ghcr.io/${{ github.repository }}-api
           tags: |
-            type=semver,pattern=v0.0.2
-            type=semver,pattern=v0.0
-            type=semver,pattern=v0
+            type=semver,pattern=v{{version}}
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}}
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
