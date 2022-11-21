@@ -114,9 +114,9 @@ jobs:
           echo ::set-output name=pushed_tag::${GITHUB_REF#refs/tags/}
       - name: Docker Meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
-          images: markliederbach/finna-api,ghcr.io/${{ github.repository }}-api
+          images: ${{ github.repository }}-api,ghcr.io/${{ github.repository }}-api
           tags: |
             type=semver,pattern=v{{version}}
             type=semver,pattern=v{{major}}.{{minor}}
@@ -132,7 +132,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and Push to ghcr.io
+      - name: Build and Push
         uses: docker/build-push-action@v3
         with:
           push: ${{ github.event_name != 'pull_request' }}
