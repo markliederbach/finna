@@ -57,6 +57,23 @@ tasks:
     cmds:
       - docker run --env-file .env.docker --rm --interactive -p 8080:8080 finna:latest
 
+  up:
+    desc: Run the frontend locally
+    deps:
+      - docker:frontend:build:local
+    cmds:
+      - docker compose --file docker-compose.yml --env-file .env.docker up --build --detach --remove-orphans api
+
+  logs:
+    desc: Read the frontend logs
+    cmds:
+      - docker compose --file docker-compose.yml logs --follow api frontend
+
+  stop:
+    desc: Stop the frontend locally
+    cmds:
+      - docker compose --file docker-compose.yml stop api frontend
+
   format:
     desc: Run the app
     vars:
@@ -156,6 +173,11 @@ tasks:
         msg: Must set the GITHUB_USERNAME environment variable
       - sh: test ! -z "$GITHUB_API_TOKEN"
         msg: Must set the GITHUB_TOKEN environment variable
+
+  docker:frontend:build:local:
+    desc: Build the frontend docker image locally
+    cmds:
+      - docker build --pull --rm -f ./frontend/Dockerfile -t frontend:latest "."
 
   docker:api:build:local:
     desc: Build the API docker image locally

@@ -5,6 +5,9 @@
 - [Dependencies](#dependencies)
 - [API](#api)
   - [Getting Started](#getting-started)
+- [Frontend](#frontend)
+  - [Logs](#logs)
+  - [Stop](#stop)
 - [Other Tasks](#other-tasks)
   - [Import Vanguard Transactions to Stock Events](#import-vanguard-transactions-to-stock-events)
   - [Download transaction history](#download-transaction-history)
@@ -33,6 +36,24 @@ Now you can run the API simply with
 task api
 ```
 - Note, this will require that docker is running.
+
+# Frontend
+If you want to run both the frontend and backend API, simply run
+```bash
+task up
+```
+This will expose the app at http://localhost:3000 (and http://localhost:8080 for the API)
+## Logs
+Once both services are running, view real-time logs with
+```bash
+task logs
+```
+
+## Stop
+To stop the application
+```bash
+task stop
+```
 
 # Other Tasks
 ## Import Vanguard Transactions to Stock Events
