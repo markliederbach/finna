@@ -1,10 +1,10 @@
 package main
 
 import (
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/markliederbach/finna/pkg/controllers"
 	"github.com/markliederbach/finna/pkg/middleware"
 	"github.com/sirupsen/logrus"
 )
@@ -39,14 +39,14 @@ func main() {
 	r.Use(middleware.InjectLogger())
 	r.Use(middleware.RequestLogger())
 
-	// routes
-	r.GET("/ping", func(c *gin.Context) {
-		logger := c.MustGet("logger").(*logrus.Entry)
-		logger.Info("ping")
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+	// initialize endpoint controllers
+	endpoints := []controllers.Endpoint{
+		controllers.NewPingController(controllers.PingInput{}),
+	}
+
+	for _, endpoint := range endpoints {
+		endpoint.Register(r)
+	}
 
 	// start server
 	err = r.Run(":" + APP_PORT)
