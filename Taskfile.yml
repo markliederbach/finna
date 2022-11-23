@@ -139,11 +139,19 @@ tasks:
     desc: Follow prompts to generate a new .env file for local development
     cmds:
       - |
-        # printf "Network ID: "
-        # stty -echo
-        # read network
-        # export network=$network
-        # stty echo
+        printf "Plaid Client ID: "
+        stty -echo
+        read plaid_client_id
+        export plaid_client_id=$plaid_client_id
+        stty echo
+
+        printf "\n"
+
+        printf "Plaid Secret: "
+        stty -echo
+        read plaid_secret
+        export plaid_secret=$plaid_secret
+        stty echo
 
         # printf "\n"
 
@@ -151,10 +159,7 @@ tasks:
         # read domain
         # export domain=$domain
 
-        # envsubst '$network,$domain' < .env.template > .env
-
-        # Once there are variables to set, uncomment the above and remove the below
-        cp .env.template .env
+        envsubst '$plaid_client_id,$plaid_secret' < .env.template > .env
 
         sed -e 's|["'\'']||g' .env > .env.docker
     silent: true

@@ -3,8 +3,8 @@
 ⚠️ **Small personal project! Contains UNTESTED code** ⚠️
 
 - [Dependencies](#dependencies)
+- [Getting Started](#getting-started)
 - [API](#api)
-  - [Getting Started](#getting-started)
 - [Frontend](#frontend)
   - [Logs](#logs)
   - [Stop](#stop)
@@ -22,16 +22,20 @@ task deps
 ```
 - Note: Requires [task](https://taskfile.dev/#/installation) to run
 
-# API
-## Getting Started
-If you are looking to run the API server, following these instructions.
+# Getting Started
+First, install project dependencies with
+```bash
+task deps
+```
 
-Set a `.env` file using the provided template.
+Next create environment files by running
 ```bash
 task env
 ```
 
-Now you can run the API simply with
+This will ask you for your Plaid Client ID and Secret. Once provided, it will generate a `.env` and `.env.docker` file to instruct your app to talk to Plaid Sandbox.
+
+# API
 ```bash
 task api
 ```
