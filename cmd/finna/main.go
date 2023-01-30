@@ -4,7 +4,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/markliederbach/finna/pkg/commands"
+	"github.com/markliederbach/finna/pkg/command"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 )
@@ -12,7 +12,7 @@ import (
 var (
 	Version  = "latest"
 	Commands = []*cli.Command{
-		commands.NewFormatCommand().ToCliCommand(),
+		command.NewFormatCommand().ToCliCommand(),
 	}
 )
 
