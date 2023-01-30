@@ -270,7 +270,7 @@ func readCSVToVanguardRecords(path string) (VanguardTransactions, error) {
 }
 
 func parseVanguardDate(date string) (time.Time, error) {
-	return time.Parse("01/02/2006", date)
+	return time.Parse("2006-01-02", date)
 }
 
 func parseFloat64(value string) (float64, error) {
