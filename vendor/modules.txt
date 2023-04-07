@@ -72,7 +72,7 @@ github.com/sirupsen/logrus
 # github.com/ugorji/go/codec v1.2.7
 ## explicit; go 1.11
 github.com/ugorji/go/codec
-# github.com/urfave/cli/v2 v2.23.5
+# github.com/urfave/cli/v2 v2.23.6
 ## explicit; go 1.18
 github.com/urfave/cli/v2
 # github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673
