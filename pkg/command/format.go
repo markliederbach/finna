@@ -54,7 +54,7 @@ type VanguardTransaction struct {
 func (v *VanguardTransaction) ToStockEvent() StockEvent {
 	// If the transaction is a sell, we need to flip the sign of the quantity
 	quantity := v.Shares
-	if strings.Contains(strings.ToLower(v.TransactionType), "sell") {
+	if strings.Contains(strings.ToLower(v.TransactionType), "sell") && quantity > 0 {
 		quantity = quantity * -1
 	}
 	return StockEvent{
@@ -270,7 +270,12 @@ func readCSVToVanguardRecords(path string) (VanguardTransactions, error) {
 }
 
 func parseVanguardDate(date string) (time.Time, error) {
-	return time.Parse("2006-01-02", date)
+	parsedTime, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		// Sometimes the report has a different date format
+		parsedTime, err = time.Parse("01/02/2006", date)
+	}
+	return parsedTime, nil
 }
 
 func parseFloat64(value string) (float64, error) {
