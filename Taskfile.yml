@@ -50,29 +50,22 @@ tasks:
       - sh: test ! -z "{{.TOOL_SRC}}"
         msg: "TOOL_SRC is a required variable"
 
-  api:
-    desc: Run the API locally with provided .env.docker variables
+  up:
+    desc: Run the docker containers locally
     deps:
       - docker:api:build:local
-    cmds:
-      - docker run --env-file .env.docker --rm --interactive -p 8080:8080 finna:latest
-
-  up:
-    desc: Run the frontend locally
-    deps:
-      - docker:frontend:build:local
     cmds:
       - docker compose --file docker-compose.yml --env-file .env.docker up --build --detach --remove-orphans api
 
   logs:
-    desc: Read the frontend logs
+    desc: Read the docker images logs
     cmds:
-      - docker compose --file docker-compose.yml logs --follow api frontend
+      - docker compose --file docker-compose.yml logs --follow api
 
   stop:
-    desc: Stop the frontend locally
+    desc: Stop the docker containers locally
     cmds:
-      - docker compose --file docker-compose.yml stop api frontend
+      - docker compose --file docker-compose.yml stop api
 
   format:
     desc: Run the app
@@ -178,11 +171,6 @@ tasks:
         msg: Must set the GITHUB_USERNAME environment variable
       - sh: test ! -z "$GITHUB_API_TOKEN"
         msg: Must set the GITHUB_TOKEN environment variable
-
-  docker:frontend:build:local:
-    desc: Build the frontend docker image locally
-    cmds:
-      - docker build --pull --rm -f ./frontend/Dockerfile -t frontend:latest "."
 
   docker:api:build:local:
     desc: Build the API docker image locally
