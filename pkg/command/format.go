@@ -275,7 +275,7 @@ func parseVanguardDate(date string) (time.Time, error) {
 		// Sometimes the report has a different date format
 		parsedTime, err = time.Parse("01/02/2006", date)
 	}
-	return parsedTime, nil
+	return parsedTime, err
 }
 
 func parseFloat64(value string) (float64, error) {
