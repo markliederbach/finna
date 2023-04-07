@@ -3,8 +3,10 @@
 ⚠️ **Small personal project! Contains UNTESTED code** ⚠️
 
 - [Dependencies](#dependencies)
+- [Getting Started](#getting-started)
 - [API](#api)
-  - [Getting Started](#getting-started)
+  - [Logs](#logs)
+  - [Stop](#stop)
 - [Other Tasks](#other-tasks)
   - [Import Vanguard Transactions to Stock Events](#import-vanguard-transactions-to-stock-events)
   - [Download transaction history](#download-transaction-history)
@@ -19,20 +21,36 @@ task deps
 ```
 - Note: Requires [task](https://taskfile.dev/#/installation) to run
 
-# API
-## Getting Started
-If you are looking to run the API server, following these instructions.
+# Getting Started
+First, install project dependencies with
+```bash
+task deps
+```
 
-Set a `.env` file using the provided template.
+Next create environment files by running
 ```bash
 task env
 ```
 
-Now you can run the API simply with
+This will ask you for your Plaid Client ID and Secret. Once provided, it will generate a `.env` and `.env.docker` file to instruct your app to talk to Plaid Sandbox.
+
+# API
+If you want to run the backend API:
 ```bash
-task api
+task up
 ```
-- Note, this will require that docker is running.
+This will expose the app at http://localhost:8080 for the API
+## Logs
+Once services are running, view real-time logs with
+```bash
+task logs
+```
+
+## Stop
+To stop the application
+```bash
+task stop
+```
 
 # Other Tasks
 ## Import Vanguard Transactions to Stock Events

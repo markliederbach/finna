@@ -50,18 +50,28 @@ tasks:
       - sh: test ! -z "{{.TOOL_SRC}}"
         msg: "TOOL_SRC is a required variable"
 
-  api:
-    desc: Run the API locally with provided .env.docker variables
+  up:
+    desc: Run the docker containers locally
     deps:
       - docker:api:build:local
     cmds:
-      - docker run --env-file .env.docker --rm --interactive -p 8080:8080 finna:latest
+      - docker compose --file docker-compose.yml --env-file .env.docker up --build --detach --remove-orphans api
+
+  logs:
+    desc: Read the docker images logs
+    cmds:
+      - docker compose --file docker-compose.yml logs --follow api
+
+  stop:
+    desc: Stop the docker containers locally
+    cmds:
+      - docker compose --file docker-compose.yml stop api
 
   format:
     desc: Run the app
     vars:
       IN: '{{.IN | default "input.csv"}}'
-      OUT: '{{.IN | default "output.csv"}}'
+      OUT: '{{.OUT | default "output.csv"}}'
     cmds:
       - go run cmd/finna/main.go format -i input.csv -o output.csv
 
@@ -122,11 +132,19 @@ tasks:
     desc: Follow prompts to generate a new .env file for local development
     cmds:
       - |
-        # printf "Network ID: "
-        # stty -echo
-        # read network
-        # export network=$network
-        # stty echo
+        printf "Plaid Client ID: "
+        stty -echo
+        read plaid_client_id
+        export plaid_client_id=$plaid_client_id
+        stty echo
+
+        printf "\n"
+
+        printf "Plaid Secret: "
+        stty -echo
+        read plaid_secret
+        export plaid_secret=$plaid_secret
+        stty echo
 
         # printf "\n"
 
@@ -134,10 +152,7 @@ tasks:
         # read domain
         # export domain=$domain
 
-        # envsubst '$network,$domain' < .env.template > .env
-
-        # Once there are variables to set, uncomment the above and remove the below
-        cp .env.template .env
+        envsubst '$plaid_client_id,$plaid_secret' < .env.template > .env
 
         sed -e 's|["'\'']||g' .env > .env.docker
     silent: true

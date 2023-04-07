@@ -22,6 +22,10 @@ func init() {
 	GIN_MODE = getOrDefaultEnv("GIN_MODE", gin.ReleaseMode)
 }
 
+const (
+	PathPrefix = "/api"
+)
+
 func main() {
 	err := configureLogger()
 	if err != nil {
@@ -40,8 +44,11 @@ func main() {
 	r.Use(middleware.RequestLogger())
 
 	// initialize endpoint controllers
+	baseController := controllers.Base{
+		PrefixPath: PathPrefix,
+	}
 	endpoints := []controllers.Endpoint{
-		controllers.NewPingController(controllers.PingInput{}),
+		controllers.NewPingController(controllers.PingInput{Base: baseController}),
 	}
 
 	for _, endpoint := range endpoints {
