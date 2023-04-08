@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>File Upload</title>
+    <title>Transaction Report</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-100">
     <div class="container mx-auto my-8">
-      <h1 class="text-3xl text-center mb-4">File Upload</h1>
+      <h1 class="text-3xl text-center mb-4">Upload Transaction Report</h1>
       <form id="upload-form" enctype="multipart/form-data" class="flex flex-col items-center">
         <div class="mb-4 w-full">
           <input class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full" type="file" name="file" required>
@@ -20,12 +20,14 @@
       <div id="success-message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 hidden" role="alert">
         <span class="block sm:inline"></span>
       </div>
+      <a href="#" id="download-link" class="hidden"></a>
     </div>
 
     <script>
       const uploadForm = document.getElementById('upload-form');
       const errorMessage = document.getElementById('error-message');
       const successMessage = document.getElementById('success-message');
+      const downloadLink = document.getElementById('download-link');
 
       uploadForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -41,6 +43,14 @@
           }
           successMessage.innerText = 'File uploaded successfully!';
           successMessage.classList.remove('hidden');
+
+          const blob = await response.blob();
+          const objectUrl = URL.createObjectURL(blob);
+
+          downloadLink.href = objectUrl;
+          downloadLink.download = 'output.csv';
+          downloadLink.click();
+
         } catch (error) {
           errorMessage.innerText = 'Failed to upload file: ' + error.message;
           errorMessage.classList.remove('hidden');

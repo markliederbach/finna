@@ -50,6 +50,7 @@ func main() {
 	}
 	endpoints := []controllers.Endpoint{
 		controllers.NewPingController(controllers.PingInput{Base: baseController}),
+		controllers.NewFormatController(controllers.FormatInput{Base: baseController}),
 	}
 
 	for _, endpoint := range endpoints {
