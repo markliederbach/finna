@@ -3,6 +3,7 @@ package command
 import (
 	"encoding/csv"
 	"fmt"
+	"io"
 	"os"
 	"sort"
 	"strconv"
@@ -157,7 +158,12 @@ func (c *FormatCommand) ToCliCommand() *cli.Command {
 		},
 		Action: func(ctx *cli.Context) error {
 			logrus.WithField("args", args).Info("Running format command")
-			transactions, err := readCSVToVanguardRecords(args.InputFile)
+			f, err := os.Open(args.InputFile)
+			if err != nil {
+				return err
+			}
+			defer f.Close()
+			transactions, err := ReadCSVToVanguardRecords(f)
 			if err != nil {
 				return err
 			}
@@ -174,14 +180,8 @@ func (c *FormatCommand) ToCliCommand() *cli.Command {
 	}
 }
 
-func readCSVToVanguardRecords(path string) (VanguardTransactions, error) {
+func ReadCSVToVanguardRecords(f io.Reader) (VanguardTransactions, error) {
 	transactions := VanguardTransactions{Transactions: []VanguardTransaction{}}
-	f, err := os.Open(path)
-	if err != nil {
-		return transactions, err
-	}
-	defer f.Close()
-
 	csvReader := csv.NewReader(f)
 	csvReader.FieldsPerRecord = -1
 	rows, err := csvReader.ReadAll()

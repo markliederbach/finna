@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"bytes"
+	"encoding/csv"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/markliederbach/finna/pkg/command"
 	"github.com/sirupsen/logrus"
 )
 
@@ -53,19 +55,41 @@ func (c *Format) FormatHandler() gin.HandlerFunc {
 
 		defer fileReader.Close()
 
-		// Read the file into a string
-		content, err := ioutil.ReadAll(fileReader)
+		// Read the file
+		transactions, err := command.ReadCSVToVanguardRecords(fileReader)
 		if err != nil {
 			logger.Error(err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to read uploaded file"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to parse uploaded file"})
+			return
+		}
+
+		// Format to Stock Events
+		stockEvents := transactions.ToStockEvents()
+		csvData := stockEvents.ToCSVSlice()
+
+		// Write to in-memory buffer
+		var buf bytes.Buffer
+		csvWriter := csv.NewWriter(&buf)
+		err = csvWriter.WriteAll(csvData)
+		if err != nil {
+			logger.Error(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to format uploaded file"})
+			return
+		}
+		csvWriter.Flush()
+		if err := csvWriter.Error(); err != nil {
+			logger.Error(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to write formatted file"})
 			return
 		}
 
 		// Serve the file to the client
 		c.Header("Content-Disposition", "attachment; filename="+"output-foo.csv")
 		c.Header("Content-Type", "application/text/plain")
-		c.Header("Accept-Length", fmt.Sprintf("%d", len(content)))
-		c.Writer.Write([]byte(content))
+		c.Header("Accept-Length", fmt.Sprintf("%d", len(buf.Bytes())))
+		c.Writer.Write(buf.Bytes())
+
+		logger.Info("file formatted successfully")
 
 	}
 }
