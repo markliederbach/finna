@@ -39,6 +39,7 @@ func main() {
 	r.Use(gin.Recovery())
 
 	// custom middleware
+	r.Use(middleware.Cors("http://127.0.0.1:3000"))
 	r.Use(middleware.Uuid())
 	r.Use(middleware.InjectLogger())
 	r.Use(middleware.RequestLogger())
