@@ -35,7 +35,7 @@ task env
 This will ask you for your Plaid Client ID and Secret. Once provided, it will generate a `.env` and `.env.docker` file to instruct your app to talk to Plaid Sandbox.
 
 # API
-If you want to run the backend API:
+If you want to run the web app:
 ```bash
 task up
 ```
@@ -53,6 +53,7 @@ task stop
 ```
 
 # Other Tasks
+In addition to what you can do within the web application, you can also run some of the tasks manually on the command line.
 ## Import Vanguard Transactions to Stock Events
 This task helps to format exported transactions from Vanguard in a way that can be imported into the Stock Events app.
 ## Download transaction history
