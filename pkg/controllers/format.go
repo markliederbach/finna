@@ -87,7 +87,12 @@ func (c *Format) FormatHandler() gin.HandlerFunc {
 		c.Header("Content-Disposition", "attachment; filename="+"output-foo.csv")
 		c.Header("Content-Type", "application/text/plain")
 		c.Header("Accept-Length", fmt.Sprintf("%d", len(buf.Bytes())))
-		c.Writer.Write(buf.Bytes())
+		_, err = c.Writer.Write(buf.Bytes())
+		if err != nil {
+			logger.Error(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "CSV writer error"})
+			return
+		}
 
 		logger.Info("file formatted successfully")
 
