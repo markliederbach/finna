@@ -34,7 +34,7 @@
 
         const formData = new FormData(uploadForm);
         try {
-          const response = await fetch('http://localhost:8080/api/format', {
+          const response = await fetch('{{ .base_url }}/api/format', {
             method: 'POST',
             body: formData
           });

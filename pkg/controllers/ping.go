@@ -30,10 +30,10 @@ func (c *Ping) Register(r *gin.Engine) {
 }
 
 func (c *Ping) Handler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		logger := c.MustGet("logger").(*logrus.Entry)
+	return func(ctx *gin.Context) {
+		logger := ctx.MustGet("logger").(*logrus.Entry)
 		logger.Info("ping")
-		c.JSON(http.StatusOK, gin.H{
+		ctx.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
 	}

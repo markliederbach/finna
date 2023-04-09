@@ -10,18 +10,18 @@ import (
 )
 
 var (
-	Version      = "latest"
-	APP_PORT     string
-	LOG_LEVEL    string
-	GIN_MODE     string
-	FRONTEND_URL string
+	Version   = "latest"
+	APP_PORT  string
+	LOG_LEVEL string
+	GIN_MODE  string
+	BASE_URL  string
 )
 
 func init() {
 	APP_PORT = getOrDefaultEnv("APP_PORT", "8080")
 	LOG_LEVEL = getOrDefaultEnv("LOG_LEVEL", "INFO")
 	GIN_MODE = getOrDefaultEnv("GIN_MODE", gin.ReleaseMode)
-	FRONTEND_URL = getOrDefaultEnv("FRONTEND_URL", "http://127.0.0.1:8080")
+	BASE_URL = getOrDefaultEnv("BASE_URL", "http://127.0.0.1:8080")
 }
 
 const (
@@ -42,7 +42,7 @@ func main() {
 	r.Use(gin.Recovery())
 
 	// custom middleware
-	r.Use(middleware.Cors(FRONTEND_URL))
+	r.Use(middleware.Cors())
 	r.Use(middleware.Uuid())
 	r.Use(middleware.InjectLogger())
 	r.Use(middleware.RequestLogger())
