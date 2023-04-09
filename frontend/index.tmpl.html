@@ -8,19 +8,32 @@
   <body class="bg-gray-800 flex items-center justify-center h-screen">
     <div class="container mx-auto">
       <h1 class="text-3xl text-center mb-4 text-white">Format Transaction Report</h1>
-      <form id="upload-form" enctype="multipart/form-data" class="flex flex-col items-center">
-        <div class="mb-4 w-full">
-          <input class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full" type="file" name="file" required>
+      <div class="flex flex-col items-center mb-8">
+        <h2 class="text-xl mb-2 text-white">Step 1: Visit Vanguard</h2>
+        <p class="text-gray-400 mb-4">Download your "spreadsheet-compatible CSV file" from Vanguard</p>
+        <p class="text-gray-400 mb-4"><a href="https://personal.vanguard.com/us/OfxWelcome" target="_blank" rel="noopener noreferrer" class="underline text-blue-500">https://personal.vanguard.com/us/OfxWelcome</a></p>
+      </div>
+      <div class="flex flex-col items-center">
+        <h2 class="text-xl mb-2 text-white">Step 2: Format File</h2>
+        <p class="text-gray-400 mb-4">Upload the file here to format it for Stock Events</p>
+        <form id="upload-form" enctype="multipart/form-data" class="flex flex-col items-center">
+          <div class="mb-4 w-full">
+            <input class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full" type="file" name="file" required>
+          </div>
+          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-3">Format</button>
+        </form>
+        <div id="error-message" class="bg-gray-900 border border-gray-700 text-red-700 px-4 py-3 rounded relative mb-4 hidden" role="alert">
+          <span class="block sm:inline"></span>
         </div>
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-3">Format</button>
-      </form>
-      <div id="error-message" class="bg-gray-900 border border-gray-700 text-red-700 px-4 py-3 rounded relative mb-4 hidden" role="alert">
-        <span class="block sm:inline"></span>
+        <div id="success-message" class="bg-gray-900 border border-gray-700 text-green-700 px-4 py-3 rounded relative mb-4 hidden" role="alert">
+          <span class="block sm:inline"></span>
+        </div>
+        <a href="#" id="download-link" class="hidden"></a>
       </div>
-      <div id="success-message" class="bg-gray-900 border border-gray-700 text-green-700 px-4 py-3 rounded relative mb-4 hidden" role="alert">
-        <span class="block sm:inline"></span>
+      <div class="flex flex-col items-center mb-8">
+        <h2 class="text-xl mb-2 text-white">Step 3: Import to Stock Events</h2>
+        <p class="text-gray-400 mb-4">Open Stock Events and import the transactions in your account settings</p>
       </div>
-      <a href="#" id="download-link" class="hidden"></a>
     </div>
 
     <script>
