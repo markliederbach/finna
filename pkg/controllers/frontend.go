@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"html/template"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +35,7 @@ func (c *Frontend) Handler() gin.HandlerFunc {
 		logger := ctx.MustGet("logger").(*logrus.Entry)
 		logger.Info("frontend")
 		ctx.HTML(http.StatusOK, "index.tmpl.html", gin.H{
-			"base_url": c.BaseUrl,
+			"base_url": template.URL(c.BaseUrl),
 		})
 	}
 }
