@@ -10,20 +10,23 @@ import (
 )
 
 var (
-	Version   = "latest"
-	APP_PORT  string
-	LOG_LEVEL string
-	GIN_MODE  string
+	Version      = "latest"
+	APP_PORT     string
+	LOG_LEVEL    string
+	GIN_MODE     string
+	FRONTEND_URL string
 )
 
 func init() {
 	APP_PORT = getOrDefaultEnv("APP_PORT", "8080")
 	LOG_LEVEL = getOrDefaultEnv("LOG_LEVEL", "INFO")
 	GIN_MODE = getOrDefaultEnv("GIN_MODE", gin.ReleaseMode)
+	FRONTEND_URL = getOrDefaultEnv("FRONTEND_URL", "http://127.0.0.1:8080")
 }
 
 const (
-	PathPrefix = "/api"
+	APIPathPrefix      = "/api"
+	FrontendPathPrefix = "/"
 )
 
 func main() {
@@ -39,16 +42,26 @@ func main() {
 	r.Use(gin.Recovery())
 
 	// custom middleware
+	r.Use(middleware.Cors(FRONTEND_URL))
 	r.Use(middleware.Uuid())
 	r.Use(middleware.InjectLogger())
 	r.Use(middleware.RequestLogger())
 
 	// initialize endpoint controllers
-	baseController := controllers.Base{
-		PrefixPath: PathPrefix,
+	baseAPIController := controllers.Base{
+		PrefixPath: APIPathPrefix,
+	}
+
+	baseFrontendController := controllers.Base{
+		PrefixPath: FrontendPathPrefix,
 	}
 	endpoints := []controllers.Endpoint{
-		controllers.NewPingController(controllers.PingInput{Base: baseController}),
+		// API endpoints
+		controllers.NewPingController(controllers.PingInput{Base: baseAPIController}),
+		controllers.NewFormatController(controllers.FormatInput{Base: baseAPIController}),
+
+		// Frontend endpoints
+		controllers.NewFrontendController(controllers.FrontendInput{Base: baseFrontendController}),
 	}
 
 	for _, endpoint := range endpoints {
