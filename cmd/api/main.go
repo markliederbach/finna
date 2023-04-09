@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func init() {
 	APP_PORT = getOrDefaultEnv("APP_PORT", "8784")
 	LOG_LEVEL = getOrDefaultEnv("LOG_LEVEL", "INFO")
 	GIN_MODE = getOrDefaultEnv("GIN_MODE", gin.ReleaseMode)
-	BASE_URL = getOrDefaultEnv("BASE_URL", "http://127.0.0.1:8784")
+	BASE_URL = getOrDefaultEnv("BASE_URL", fmt.Sprintf("http://127.0.0.1:%s", APP_PORT))
 }
 
 const (
@@ -61,7 +62,7 @@ func main() {
 		controllers.NewFormatController(controllers.FormatInput{Base: baseAPIController}),
 
 		// Frontend endpoints
-		controllers.NewFrontendController(controllers.FrontendInput{Base: baseFrontendController}),
+		controllers.NewFrontendController(controllers.FrontendInput{Base: baseFrontendController, BaseUrl: BASE_URL}),
 	}
 
 	for _, endpoint := range endpoints {
