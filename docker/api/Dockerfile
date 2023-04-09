@@ -24,5 +24,5 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /finna /finna
 COPY --from=builder /go/src/github.com/markliederbach/finna/frontend /frontend
 
-EXPOSE 8080/tcp
+EXPOSE 8784/tcp
 ENTRYPOINT ["/finna"]

@@ -29,7 +29,7 @@
       "cwd": "${workspaceRoot}",
       "program": "cmd/api/main.go",
       "env": {
-        "APP_PORT": "8080",
+        "APP_PORT": "8784",
         "LOG_LEVEL": "DEBUG"
       },
       "args": [],

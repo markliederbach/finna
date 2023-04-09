@@ -18,10 +18,10 @@ var (
 )
 
 func init() {
-	APP_PORT = getOrDefaultEnv("APP_PORT", "8080")
+	APP_PORT = getOrDefaultEnv("APP_PORT", "8784")
 	LOG_LEVEL = getOrDefaultEnv("LOG_LEVEL", "INFO")
 	GIN_MODE = getOrDefaultEnv("GIN_MODE", gin.ReleaseMode)
-	BASE_URL = getOrDefaultEnv("BASE_URL", "http://127.0.0.1:8080")
+	BASE_URL = getOrDefaultEnv("BASE_URL", "http://127.0.0.1:8784")
 }
 
 const (

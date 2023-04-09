@@ -39,7 +39,7 @@ If you want to run the backend API:
 ```bash
 task up
 ```
-This will expose the app at http://localhost:8080 for the API
+This will expose the app at http://localhost:8784 for the API
 ## Logs
 Once services are running, view real-time logs with
 ```bash
