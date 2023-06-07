@@ -101,7 +101,7 @@ github.com/plaid/plaid-go/v3/plaid
 # github.com/russross/blackfriday/v2 v2.1.0
 ## explicit
 github.com/russross/blackfriday/v2
-# github.com/sirupsen/logrus v1.9.2
+# github.com/sirupsen/logrus v1.9.3
 ## explicit; go 1.13
 github.com/sirupsen/logrus
 # github.com/twitchyliquid64/golang-asm v0.15.1
