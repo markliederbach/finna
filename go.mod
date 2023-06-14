@@ -7,7 +7,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/plaid/plaid-go/v3 v3.5.0
 	github.com/sirupsen/logrus v1.9.3
-	github.com/urfave/cli/v2 v2.25.5
+	github.com/urfave/cli/v2 v2.25.6
 )
 
 require (
